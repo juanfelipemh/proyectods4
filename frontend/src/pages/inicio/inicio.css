@@ -1,0 +1,18 @@
+main {
+    height: 100%;  
+    display: flex;
+}
+
+p {
+    background: none;
+    position: absolute;
+    color: #ffff;
+    font-size: 100px;
+    text-align: center;    
+    
+}
+
+.img-inicio {
+    width: 100%;
+
+}

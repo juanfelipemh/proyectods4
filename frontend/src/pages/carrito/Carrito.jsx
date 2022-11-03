@@ -1,9 +1,12 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import "./carrito.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const Carrito = ({ carrito, setCarrito }) => {
+ 
 
   const TotalSuma = () => {
     return carrito.reduce(
@@ -16,10 +19,10 @@ const Carrito = ({ carrito, setCarrito }) => {
     setCarrito([]);
   };
 
+  
   const setCantidad = (producto, total) => {
     const nuevoCarrito = [...carrito];
-    nuevoCarrito.find((item) => item.nombre === producto.nombre).quantity =
-    total;
+    nuevoCarrito.find((item) => item.nombre === producto.nombre).quantity = total
     setCarrito(nuevoCarrito);
   };
 
@@ -27,17 +30,36 @@ const Carrito = ({ carrito, setCarrito }) => {
     setCarrito(carrito.filter((producto) => producto != productoRemovido));
   };
 
+  const finalizarCompra = async () => {
+    try {
+      const nuevaFactura = {     
+        valorTotal: TotalSuma(),
+        items: [...carrito]       
+      };      
+      
+      await axios.post("http://localhost:5000/api/facturas/agregarFacturas", nuevaFactura)
+      
+      Swal.fire(
+        'Compra relizada!',
+        'Pronto recibirás tus productos!',
+        'success'        
+      );       
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
   return (
     <>
-      <h1>Carrito de compras</h1>
+      <h2>Carrito de compras - Clientes</h2>
 
       <div>
         <button id="crear" className="btn btn-danger" onClick={limpiarCarro}>Limpiar carrito</button>
       </div>
 
-      <table class="table table-striped">
+      <table className="table table-striped">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -55,7 +77,7 @@ const Carrito = ({ carrito, setCarrito }) => {
               <td>{producto.nombre}</td>
               <td>{producto.precio}</td>
               <td>
-                <input value={producto.quantity}
+                <input value={producto.quantity || 0}
                 onChange={(e) => setCantidad(producto, parseInt(e.target.value))} />
               </td>    
               <td>
@@ -67,9 +89,9 @@ const Carrito = ({ carrito, setCarrito }) => {
       </table>
 
       <div className="costo">Costo Total </div>
-      <div className="valor">$ {TotalSuma()}</div>
+      <div className="valor">$ {TotalSuma() || 0}</div>
 
-      <Link id="comprar" className="btn btn-success" to="/ventas">Comprar</Link>
+      <Link id="comprar" className="btn btn-success" onClick={ ()=> {{finalizarCompra(), limpiarCarro()}}}>Comprar</Link>
     </>
   );
 };

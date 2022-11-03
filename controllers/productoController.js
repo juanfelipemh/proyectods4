@@ -36,8 +36,8 @@ export const agregarProductoCtrl = async (req, res) => {
 // Modificar productos
 export const modificarProductoCtrl = async (req, res) => {
     try {
-        const { nombre, precio, imagen } = req.body
-        await Producto.findByIdAndUpdate(req.params.id, {nombre, precio, imagen})        
+        const { nombre, precio, imagen, stock } = req.body
+        await Producto.findByIdAndUpdate(req.params.id, {nombre, precio, imagen, stock})        
         res.status(204).send("Producto modificado satisfactoriamente")
 
     } catch (error) {

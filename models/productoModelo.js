@@ -14,6 +14,10 @@ const productoSchema = mongoose.Schema({
     imagen:{
         type: String,
         required: true
+    },
+    stock:{
+        type: Number,
+        required: true
     }
 },
 {

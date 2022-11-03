@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom'
 
 const Compras = ({ carrito, setCarrito }) => {
   const [productos, setProductos] = useState([]);
@@ -23,22 +24,26 @@ const Compras = ({ carrito, setCarrito }) => {
     let nuevoCarrito = [...carrito];
     let itemCarrito = nuevoCarrito.find(
       (item) => producto.nombre === item.nombre
-    );
+    );    
+
 
     if (itemCarrito) {
-      itemCarrito.quantity++;
-    } else {
+        itemCarrito.quantity++;          
+      }  else {
       itemCarrito = {
         ...producto,
         quantity: 1,
-      };
-      nuevoCarrito.push(itemCarrito);
-    }
+      }; 
+      nuevoCarrito.push(itemCarrito);     
+    }    
     setCarrito(nuevoCarrito);
   };
 
   return (
     <>
+    <h2>Artículos de la tienda - Cliente</h2>
+
+    <Link className="btn btn-info m-lg-3" to="/carrito">Ir al carrito de compras </Link>  
 
     <div className="row">
       {productos.map((producto) => (
@@ -55,18 +60,18 @@ const Compras = ({ carrito, setCarrito }) => {
                 width="50"
               />
               <h6>Precio: {producto.precio}</h6>
+              <h6>Cantidad Disponible: {producto.stock}</h6>
               <h6>ID: {producto._id}</h6>
             </div>
 
             <div className="card-footer">
               <button
                 className="btn btn-success text-white"
-                onClick={() => {
-                  adicionarCarrito(producto);
-                }}
+                onClick={() => {adicionarCarrito(producto)}}
               >
                 Seleccionar
               </button>
+              
             </div>
           </div>
         </div>

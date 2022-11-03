@@ -16,5 +16,11 @@ export const productoInputs = [
         label: "imagen",
         type: "text",
         placeholder: "Imagen URL",       
+    },
+    {
+        id: "stock",
+        label: "stock",
+        type: "number",
+        placeholder: "stock"
     }
 ]
